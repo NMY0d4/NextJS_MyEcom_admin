@@ -8,7 +8,7 @@ export default function Home() {
         <div className='text-center w-full'>
           <button
             onClick={() => signIn('google')}
-            className='bg-white p-2 px-4 rounded-lg'
+            className='bg-white font-semibold p-2 px-4 rounded-lg hover:bg-tertiary hover:text-white transition duration-300'
           >
             Login with Google
           </button>
