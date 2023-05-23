@@ -8,29 +8,30 @@ import {
 import Link from 'next/link';
 
 const Nav = () => {
-  const linkclasses = 'flex items-center gap-2';
+  const inactiveLink = 'flex items-center gap-2 p-1';
+  const activeLink = `${inactiveLink} bg-secondary text-primary rounded-l-lg`;
 
   return (
-    <aside className='text-fontColor p-4'>
-      <Link href='/' className={`${linkclasses} mb-6`}>
+    <aside className='text-secondary p-4 pr-0'>
+      <Link href='/' className={`${inactiveLink} mb-6 mr-3`}>
         <BiStore size='1.5rem' />
         <span>EcommerceAdmin</span>
       </Link>
 
       <nav className='flex flex-col gap-2'>
-        <Link href={'/'} className={linkclasses}>
+        <Link href={'/'} className={activeLink}>
           <HiOutlineHome size='1.5rem' />
           Dashboard
         </Link>
-        <Link href={'/'} className={linkclasses}>
+        <Link href={'/products'} className={inactiveLink}>
           <BsBoxes size='1.5rem' />
           Products
         </Link>
-        <Link href={'/'} className={linkclasses}>
+        <Link href={'/orders'} className={inactiveLink}>
           <HiOutlineClipboardList size='1.5rem' />
           Orders
         </Link>
-        <Link href={'/'} className={linkclasses}>
+        <Link href={'/settings'} className={inactiveLink}>
           <HiOutlineCog size='1.5rem' />
           Settings
         </Link>

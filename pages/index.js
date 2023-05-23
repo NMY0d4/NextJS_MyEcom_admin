@@ -19,9 +19,11 @@ export default function Home() {
   }
 
   return (
-    <div className='bg-genBg w-screen min-h-screen'>
+    <div className='bg-genBg w-screen min-h-screen flex'>
       <Nav />
-      <div>logged in {session.user.email}</div>
+      <div className='bg-secondary text-primary flex-grow m-2 ml-0 rounded-lg p-4'>
+        logged in {session.user.email}
+      </div>
     </div>
   );
 }

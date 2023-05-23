@@ -9,10 +9,10 @@ module.exports = {
     extend: {
       colors: {
         primary: '#27374D',
-        secondary: '#526D82',
+        secondary: '#DDE6ED',
         tertiary: '#9DB2BF',
-        genBg: '#DDE6ED',
-        fontColor:'#27374D'
+        genBg: '#526D82',
+        
       },
       width: {
         contWithXl: '1240px',
