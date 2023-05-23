@@ -1,29 +1,26 @@
-import Nav from '@/components/Nav';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import Layout from '@/components/layout';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 export default function Home() {
   const { data: session } = useSession();
-  if (!session) {
-    return (
-      <div className='bg-genBg w-screen h-screen flex items-center'>
-        <div className='text-center w-full'>
-          <button
-            onClick={() => signIn('google')}
-            className='bg-white font-semibold p-2 px-4 rounded-lg hover:bg-tertiary hover:text-white transition duration-300'
-          >
-            Login with Google
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (!session) return;
 
   return (
-    <div className='bg-genBg w-screen min-h-screen flex'>
-      <Nav />
-      <div className='bg-secondary text-primary flex-grow m-2 ml-0 rounded-lg p-4'>
-        logged in {session.user.email}
+    <Layout>
+      <div className='flex justify-between'>
+        <h2>
+          Hello, <b> {session.user.name}</b>
+        </h2>
+        <div className='flex bg-gray-300 gap-1 text-black rounded-lg overflow-hidden'>
+          <img
+            src={session.user.image}
+            alt='photo profil'
+            className='w-8 h-8'
+          />
+          <span className='py-1 px-2'>{session.user.name}</span>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
