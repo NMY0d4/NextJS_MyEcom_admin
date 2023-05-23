@@ -12,6 +12,7 @@ module.exports = {
         secondary: '#526D82',
         tertiary: '#9DB2BF',
         genBg: '#DDE6ED',
+        fontColor:'#27374D'
       },
       width: {
         contWithXl: '1240px',
