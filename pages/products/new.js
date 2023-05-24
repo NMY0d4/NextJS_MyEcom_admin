@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
 function NewProduct() {
@@ -19,11 +20,11 @@ function NewProduct() {
     }
   };
 
-  const createProduct = (e) => {
+  const createProduct = async (e) => {
     e.preventDefault();
+    await axios.post('/api/products', product);
 
     console.log('Product:', product);
-
     setProduct(initialState);
   };
 
