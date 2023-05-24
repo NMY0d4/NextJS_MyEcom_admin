@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 function NewProduct() {
   const initialState = {
@@ -8,7 +9,13 @@ function NewProduct() {
     price: 0,
   };
 
+  useEffect(() => {
+    setIsDisabled(false);
+  }, []);
+
   const [product, setProduct] = useState(initialState);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const router = useRouter();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,11 +29,17 @@ function NewProduct() {
 
   const createProduct = async (e) => {
     e.preventDefault();
+    setIsDisabled(true);
     await axios.post('/api/products', product);
 
     console.log('Product:', product);
     setProduct(initialState);
+    router.push('/products');
   };
+
+  // if (goToProducts) {
+  //   return redirect('/products');
+  // }
 
   return (
     <div className='w-[80%] mx-auto'>
@@ -55,8 +68,12 @@ function NewProduct() {
           value={product.price === 0 ? '' : product.price}
           onChange={handleInputChange}
         ></input>
-        <button className='btn-primary' type='submit'>
-          Save
+        <button
+          className={`btn-primary ${isDisabled && 'disabled'}`}
+          type='submit'
+          disabled={isDisabled}
+        >
+          {isDisabled ? 'Processing' : 'Save'}
         </button>
       </form>
     </div>
