@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 
 const Nav = () => {
   const inactiveLink = 'flex items-center gap-2 p-1';
-  const activeLink = `${inactiveLink} bg-secondary text-primary rounded-l-lg`;
+  const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-l-lg`;
   const router = useRouter();
   const { pathname } = router;
 
