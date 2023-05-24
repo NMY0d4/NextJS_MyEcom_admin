@@ -19,10 +19,10 @@ function Products({ products }) {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.key}>
+            <tr key={product._id}>
               <td>{product.productName}</td>
               <td>
-                <Link href={`/products/${product._id}`}>
+                <Link href={`/products/edit/${product._id}`}>
                   <AiOutlineEdit />
                   Edit
                 </Link>
