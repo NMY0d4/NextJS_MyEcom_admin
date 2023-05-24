@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input,
+textarea {
+  @apply border-2 border-tertiary rounded-md px-2 py-1 w-full;
+  @apply mb-2;
+}
+
+input:focus,
+textarea:focus {
+  @apply border-primary;
+}
+
+h1 {
+  @apply text-3xl font-semibold;
+}
+
+label {
+  @apply text-primary;
+}
+
+.btn-primary {
+  @apply bg-primary text-secondary font-semibold px-4 py-1 rounded-md transition duration-300 border  border-primary;
+}
+
+.btn-primary:hover {
+  @apply bg-secondary text-primary border-tertiary;
+}

@@ -9,7 +9,7 @@ export default function Layout({ children }) {
         <div className='text-center w-full'>
           <button
             onClick={() => signIn('google')}
-            className='bg-white font-semibold p-2 px-4 rounded-lg hover:bg-tertiary hover:text-white transition duration-300'
+            className='bg-secondary font-semibold p-2 px-4 rounded-lg hover:bg-tertiary hover:text-secondary transition duration-300'
           >
             Login with Google
           </button>
