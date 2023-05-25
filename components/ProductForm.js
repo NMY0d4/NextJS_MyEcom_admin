@@ -45,8 +45,17 @@ function ProductForm({ product: editProduct, formTitle }) {
     router.push('/products');
   };
 
-  function uploadImages(e) {
-    console.log(e);
+  async function uploadImages(e) {
+    const files = e.target?.files;    
+    if (files?.length > 0) {
+      const data = new FormData();
+      for (const file of files) {
+        data.append('file', file);
+      }
+      
+      const { resData } = await axios.post('/api/upload', data);
+      
+    }
   }
 
   return (
