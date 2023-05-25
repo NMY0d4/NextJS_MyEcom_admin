@@ -18,4 +18,9 @@ export default async function handle(req, res) {
     const productDoc = await Product.create({ ...req.body });
     res.json(productDoc);
   }
+
+  if (method === 'PUT') {
+    await Product.updateOne({ _id: req.body._id }, { ...req.body });
+    res.json(true);
+  }
 }

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-function ProductForm() {
+function ProductForm({ product: editProduct, formTitle }) {
   const initialState = {
     productName: '',
     description: '',
@@ -13,7 +13,8 @@ function ProductForm() {
     setIsDisabled(false);
   }, []);
 
-  const [product, setProduct] = useState(initialState);
+  const [product, setProduct] = useState(editProduct || initialState);
+
   const [isDisabled, setIsDisabled] = useState(false);
   const router = useRouter();
 
@@ -27,10 +28,15 @@ function ProductForm() {
     }
   };
 
-  const createProduct = async (e) => {
+  const saveProduct = async (e) => {
     e.preventDefault();
     setIsDisabled(true);
-    await axios.post('/api/products', product);
+
+    if (editProduct) {
+      await axios.put('/api/products', product);
+    } else {
+      await axios.post('/api/products', product);
+    }
 
     setProduct(initialState);
     router.push('/products');
@@ -38,8 +44,10 @@ function ProductForm() {
 
   return (
     <div className='w-[80%] mx-auto'>
-      <h1 className='text-primary mb-3'>New Product</h1>
-      <form onSubmit={createProduct}>
+      <h1 className='text-primary mb-3'>
+        {formTitle ? `${formTitle} "${product.productName}"` : 'New Product'}
+      </h1>
+      <form onSubmit={saveProduct}>
         <label>Product name</label>
         <input
           type='text'

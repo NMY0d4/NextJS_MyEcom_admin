@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function EditProductPage() {
   const router = useRouter();
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const { id } = router.query;
 
   useEffect(() => {
@@ -16,11 +16,5 @@ export default function EditProductPage() {
     fetchProduct();
   }, [id]);
 
-  console.log(product);
-
-  return (
-    <>
-      <ProductForm />
-    </>
-  );
+  return <>{product && <ProductForm product={product} formTitle='Edit' />}</>;
 }
