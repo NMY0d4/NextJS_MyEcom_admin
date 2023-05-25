@@ -4,7 +4,6 @@ import axios from 'axios';
 import { AiOutlineEdit } from 'react-icons/ai';
 
 function Products({ products }) {
-  console.log(products);
   return (
     <>
       <Link className='btn-primary' href={'/products/new'}>
