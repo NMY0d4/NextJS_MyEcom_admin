@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { HiOutlineUpload } from 'react-icons/hi';
 
 function ProductForm({ product: editProduct, formTitle }) {
   const initialState = {
     productName: '',
     description: '',
     price: 0,
+    images: [],
   };
 
   useEffect(() => {
@@ -17,6 +19,7 @@ function ProductForm({ product: editProduct, formTitle }) {
 
   const [isDisabled, setIsDisabled] = useState(false);
   const router = useRouter();
+  const { images } = product;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +45,10 @@ function ProductForm({ product: editProduct, formTitle }) {
     router.push('/products');
   };
 
+  function uploadImages(e) {
+    console.log(e);
+  }
+
   return (
     <div className='w-[80%] mx-auto'>
       <h1 className='text-primary mb-3'>
@@ -56,6 +63,17 @@ function ProductForm({ product: editProduct, formTitle }) {
           value={product.productName}
           onChange={handleInputChange}
         />
+
+        <label>Photos</label>
+        <div className='mb-2'>
+          <label className='w-24 h-24 px-2 flex items-center justify-center gap-2 text-tertiary rounded-lg bg-white cursor-pointer'>
+            <HiOutlineUpload size='2rem' />
+            <div>Upload</div>
+            <input type='file' onChange={uploadImages} className='hidden' />
+          </label>
+          {!images?.length && <div>No photos in this product</div>}
+        </div>
+
         <label>Description</label>
         <textarea
           name='description'

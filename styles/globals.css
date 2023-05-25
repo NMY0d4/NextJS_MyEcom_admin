@@ -18,7 +18,7 @@ h1 {
 }
 
 label {
-  @apply text-primary;
+  @apply text-primary font-semibold;
 }
 
 .btn-primary {
