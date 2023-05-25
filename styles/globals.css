@@ -25,6 +25,14 @@ label {
   @apply bg-primary text-secondary min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300 border border-primary;
 }
 
+.btn-primary-danger {
+  @apply bg-danger text-secondary min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300 border border-primary;
+}
+
+.btn-primary-danger:hover {
+  @apply scale-110 transition duration-300;
+}
+
 .btn-primary:hover,
 table.basic a:hover {
   @apply bg-secondary text-primary border-tertiary;
@@ -47,5 +55,5 @@ table.basic tr td {
 }
 
 table.basic a {
-  @apply bg-primary text-secondary text-sm py-1 px-2 rounded-md inline-flex gap-1 transition duration-300 border border-primary items-center;
+  @apply bg-primary text-secondary text-sm py-1 px-2 rounded-md inline-flex gap-1 transition duration-300 border border-primary items-center mr-2;
 }

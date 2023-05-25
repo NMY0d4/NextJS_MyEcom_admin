@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,6 +12,7 @@ module.exports = {
         primary: '#27374D',
         secondary: '#DDE6ED',
         tertiary: '#9DB2BF',
+        danger: 'darkRed',
         genBg: '#526D82',
         
       },

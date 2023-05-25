@@ -1,8 +1,8 @@
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const { data: session } = useSession();
-  console.log(session?.user?.image);
 
   return (
     <>
@@ -12,7 +12,7 @@ export default function Home() {
         </h2>
         <div className='flex bg-gray-300 gap-1 text-black rounded-lg overflow-hidden'>
           <img
-            src={session?.user?.image}
+            src={session.user.image}
             alt='photo profil'
             className='w-8 h-8'
           />

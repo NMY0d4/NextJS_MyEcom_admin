@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 
 function Products({ products }) {
   return (
@@ -20,10 +20,14 @@ function Products({ products }) {
           {products.map((product) => (
             <tr key={product._id}>
               <td>{product.productName}</td>
-              <td>
+              <td>              
                 <Link href={`/products/edit/${product._id}`}>
                   <AiOutlineEdit />
                   Edit
+                </Link>
+                <Link href={`/products/delete/${product._id}`}>
+                  <AiOutlineDelete />
+                  Delete
                 </Link>
               </td>
             </tr>
