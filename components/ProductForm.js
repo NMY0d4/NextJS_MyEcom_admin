@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { HiOutlineUpload } from 'react-icons/hi';
+import Image from 'next/image';
 
 function ProductForm({ product: editProduct, formTitle }) {
   const initialState = {
@@ -60,10 +61,9 @@ function ProductForm({ product: editProduct, formTitle }) {
       const updatedImages = [...product.images, ...newImages];
 
       setProduct({ ...product, images: updatedImages });
-
     }
   }
-  console.log(product.images);
+  console.log(images);
 
   return (
     <div className='w-[80%] mx-auto'>
@@ -81,7 +81,18 @@ function ProductForm({ product: editProduct, formTitle }) {
         />
 
         <label>Photos</label>
-        <div className='mb-2'>
+        <div className='mb-2 flex flex-wrap gap-4'>
+          {product.images?.length > 0 &&
+            product.images.map((link) => (
+              <div key={link} className='h-24'>
+                <img
+                  src={link}
+                  alt={`GM_Web nextJS ecommerce produit ${product.productName}`}
+                  className='rounded-lg'
+                />
+              </div>
+            ))}
+
           <label className='w-24 h-24 px-2 flex items-center justify-center gap-2 text-tertiary rounded-lg bg-white cursor-pointer'>
             <HiOutlineUpload size='2rem' />
             <div>Upload</div>

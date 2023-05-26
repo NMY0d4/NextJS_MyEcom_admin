@@ -1,6 +1,7 @@
 import multiparty from 'multiparty';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { getRandomNumber } from '@/lib/utils';
+// import { getRandomNumber } from '@/lib/utils';
+import { v4 as uuidv4 } from 'uuid';
 import mime from 'mime-types';
 import fs from 'fs';
 
@@ -29,8 +30,8 @@ export default async function handle(req, res) {
     const links = [];
     for (const file of files.file) {
       const ext = file.originalFilename.split('.').pop();
-      const newFilename = `${Date.now()}/${getRandomNumber(1000000)}.${ext}`;
-      
+      const newFilename = `${Date.now()}/${uuidv4()}.${ext}`;
+
       await client.send(
         new PutObjectCommand({
           Bucket: bucketName,
