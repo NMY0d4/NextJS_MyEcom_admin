@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { set } from 'mongoose';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { HiOutlineUpload } from 'react-icons/hi';
 import { Spinner } from './ui/spinner';
+import { ReactSortable } from 'react-sortablejs';
 // import Image from 'next/image';
 
 function ProductForm({ product: editProduct, formTitle }) {
@@ -67,6 +67,10 @@ function ProductForm({ product: editProduct, formTitle }) {
     }
   }
 
+  function updateImagesOrder(newImages) {
+    setProduct({ ...product, images: newImages });
+  }
+
   return (
     <div className='w-[80%] mx-auto'>
       <h1 className='text-primary mb-3'>
@@ -84,17 +88,22 @@ function ProductForm({ product: editProduct, formTitle }) {
 
         <label>Photos</label>
         <div className='mb-2 flex flex-wrap gap-3'>
-          {product.images?.length > 0 &&
-            product.images.map((link) => (
-              <div key={link} className='h-24'>
-                <img
-                  src={link}
-                  alt={`GM_Web nextJS ecommerce produit ${product.productName}`}
-                  className='rounded-lg'
-                />
-              </div>
-            ))}
-
+          <ReactSortable
+            list={images}
+            className='flex flex-wrap gap-3'
+            setList={updateImagesOrder}
+          >
+            {images?.length > 0 &&
+              images.map((link) => (
+                <div key={link} className='h-24'>
+                  <img
+                    src={link}
+                    alt={`GM_Web nextJS ecommerce produit ${product.productName}`}
+                    className='rounded-lg'
+                  />
+                </div>
+              ))}
+          </ReactSortable>
           {isUploading && (
             <div className='h-24 flex justify-center items-center p-1'>
               <Spinner />
