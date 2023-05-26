@@ -7,7 +7,7 @@ const CategorySchema = new Schema({
   },
 });
 
-ProductSchema.set('toJSON', {
+CategorySchema.set('toJSON', {
   versionKey: false,
 });
 

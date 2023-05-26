@@ -1,8 +1,15 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const CategoriesPage = () => {
   const [name, setName] = useState('');
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/categories').then((result) => {
+      setCategories(result.data);
+    });
+  }, []);
 
   async function saveCategory(e) {
     e.preventDefault();
@@ -35,6 +42,14 @@ const CategoriesPage = () => {
             <td>Category name</td>
           </tr>
         </thead>
+        <tbody>
+          {categories.length > 0 &&
+            categories.map((category) => (
+              <tr key={category._id}>
+                <td>{category.name}</td>
+              </tr>
+            ))}
+        </tbody>
       </table>
     </>
   );
