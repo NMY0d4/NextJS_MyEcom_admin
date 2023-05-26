@@ -1,5 +1,6 @@
 import { BiStore } from 'react-icons/bi';
 import { BsBoxes } from 'react-icons/bs';
+import { MdOutlineCategory } from 'react-icons/md';
 import {
   HiOutlineClipboardList,
   HiOutlineCog,
@@ -35,6 +36,15 @@ const Nav = () => {
         >
           <BsBoxes size='1.5rem' />
           Products
+        </Link>
+        <Link
+          href={'/categories'}
+          className={
+            pathname.includes('/categories') ? activeLink : inactiveLink
+          }
+        >
+          <MdOutlineCategory size='1.5rem' />
+          Categories
         </Link>
         <Link
           href={'/orders'}

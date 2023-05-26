@@ -65,7 +65,7 @@ function ProductForm({ product: editProduct, formTitle }) {
       setProduct({ ...product, images: updatedImages });
       setIsUploading(false);
     }
-  }
+  } 
 
   function updateImagesOrder(newImages) {
     setProduct({ ...product, images: newImages });
