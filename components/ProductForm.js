@@ -1,8 +1,10 @@
 import axios from 'axios';
+import { set } from 'mongoose';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { HiOutlineUpload } from 'react-icons/hi';
-import Image from 'next/image';
+import { Spinner } from './ui/spinner';
+// import Image from 'next/image';
 
 function ProductForm({ product: editProduct, formTitle }) {
   const initialState = {
@@ -17,7 +19,7 @@ function ProductForm({ product: editProduct, formTitle }) {
   }, []);
 
   const [product, setProduct] = useState(editProduct || initialState);
-
+  const [isUploading, setIsUploading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const router = useRouter();
   const { images } = product;
@@ -49,21 +51,21 @@ function ProductForm({ product: editProduct, formTitle }) {
   async function uploadImages(e) {
     const files = e.target?.files;
     if (files?.length > 0) {
+      setIsUploading(true);
       const data = new FormData();
       for (const file of files) {
         data.append('file', file);
       }
 
       const res = await axios.post('/api/upload', data);
-      const newImages = res.data.links; // Supposons que le résultat renvoie un tableau de liens d'images
+      const newImages = res.data.links;
 
-      // Fusionner les nouvelles images avec les images existantes
       const updatedImages = [...product.images, ...newImages];
 
       setProduct({ ...product, images: updatedImages });
+      setIsUploading(false);
     }
   }
-  console.log(images);
 
   return (
     <div className='w-[80%] mx-auto'>
@@ -81,7 +83,7 @@ function ProductForm({ product: editProduct, formTitle }) {
         />
 
         <label>Photos</label>
-        <div className='mb-2 flex flex-wrap gap-4'>
+        <div className='mb-2 flex flex-wrap gap-3'>
           {product.images?.length > 0 &&
             product.images.map((link) => (
               <div key={link} className='h-24'>
@@ -93,12 +95,17 @@ function ProductForm({ product: editProduct, formTitle }) {
               </div>
             ))}
 
+          {isUploading && (
+            <div className='h-24 flex justify-center items-center p-1'>
+              <Spinner />
+            </div>
+          )}
+
           <label className='w-24 h-24 px-2 flex items-center justify-center gap-2 text-tertiary rounded-lg bg-white cursor-pointer'>
             <HiOutlineUpload size='2rem' />
             <div>Upload</div>
             <input type='file' onChange={uploadImages} className='hidden' />
           </label>
-          {!images?.length && <div>No photos in this product</div>}
         </div>
 
         <label>Description</label>

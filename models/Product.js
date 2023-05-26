@@ -13,6 +13,7 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  images: { type: [String] },
 });
 
 ProductSchema.set('toJSON', {
