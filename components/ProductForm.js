@@ -46,17 +46,24 @@ function ProductForm({ product: editProduct, formTitle }) {
   };
 
   async function uploadImages(e) {
-    const files = e.target?.files;    
+    const files = e.target?.files;
     if (files?.length > 0) {
       const data = new FormData();
       for (const file of files) {
         data.append('file', file);
       }
-      
-      const { resData } = await axios.post('/api/upload', data);
-      
+
+      const res = await axios.post('/api/upload', data);
+      const newImages = res.data.links; // Supposons que le résultat renvoie un tableau de liens d'images
+
+      // Fusionner les nouvelles images avec les images existantes
+      const updatedImages = [...product.images, ...newImages];
+
+      setProduct({ ...product, images: updatedImages });
+
     }
   }
+  console.log(product.images);
 
   return (
     <div className='w-[80%] mx-auto'>

@@ -6,6 +6,7 @@ import fs from 'fs';
 
 export default async function handle(req, res) {
   const form = new multiparty.Form();
+  const bucketName = 'nextjs-gmweb-ecommerce';
 
   try {
     const { fields, files } = await new Promise((resolve, reject) => {
@@ -18,8 +19,6 @@ export default async function handle(req, res) {
       });
     });
 
-    console.log('length:', files.file.length);
-
     const client = new S3Client({
       region: 'eu-north-1',
       credentials: {
@@ -27,12 +26,11 @@ export default async function handle(req, res) {
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
       },
     });
-    const bucketName = 'nextjs-gmweb-ecommerce';
     const links = [];
     for (const file of files.file) {
       const ext = file.originalFilename.split('.').pop();
-      const newFilename = `${Date.now()}/${getRandomNumber()}.${ext}`;
-      console.log({ ext, file });
+      const newFilename = `${Date.now()}/${getRandomNumber(1000000)}.${ext}`;
+      
       await client.send(
         new PutObjectCommand({
           Bucket: bucketName,
