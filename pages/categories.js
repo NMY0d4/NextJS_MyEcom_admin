@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 const CategoriesPage = () => {
   const [name, setName] = useState('');
 
-  async function saveCategory() {
+  async function saveCategory(e) {
+    e.preventDefault();
     await axios.post('/api/categories', { name });
+    setName('');
   }
 
   return (
@@ -27,6 +29,13 @@ const CategoriesPage = () => {
           Save
         </button>
       </form>
+      <table className='basic mt-4'>
+        <thead>
+          <tr>
+            <td>Category name</td>
+          </tr>
+        </thead>
+      </table>
     </>
   );
 };
