@@ -1,19 +1,30 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-const CategoriesPage = () => {
+const CategoriesPage = ({ data: initialCategories }) => {
   const [name, setName] = useState('');
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(initialCategories);
 
   useEffect(() => {
-    axios.get('/api/categories').then((result) => {
-      setCategories(result.data);
-    });
-  }, []);
+    setCategories(initialCategories);
+  }, [initialCategories]);
+
+  // useEffect(() => {
+  //   setCategories(data);
+  //   // axios.get('/api/categories').then((result) => {
+  //   //   setCategories(result.data);
+  //   // });
+  // }, []);
 
   async function saveCategory(e) {
     e.preventDefault();
-    await axios.post('/api/categories', { name });
+    try {
+      await axios.post('/api/categories', { name });
+      const res = await axios.get('/api/categories');
+      setCategories(res.data);
+    } catch (error) {
+      throw new Error(error);
+    }
     setName('');
   }
 
@@ -54,5 +65,14 @@ const CategoriesPage = () => {
     </>
   );
 };
+
+export async function getStaticProps(context) {
+  const res = await axios.get('http://localhost:3000/api/categories');
+  const { data } = res;
+
+  return {
+    props: { data },
+  };
+}
 
 export default CategoriesPage;
