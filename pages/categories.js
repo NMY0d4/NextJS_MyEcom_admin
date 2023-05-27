@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const CategoriesPage = ({ data: initialCategories }) => {
+  const [editedCategory, setEditedCategory] = useState(null);
   const [name, setName] = useState('');
   const [parentCategory, setParentCategory] = useState('');
 
@@ -22,19 +23,38 @@ const CategoriesPage = ({ data: initialCategories }) => {
   async function saveCategory(e) {
     e.preventDefault();
     try {
-      await axios.post('/api/categories', { name, parentCategory });
+      const data = { name, parentCategory };
+      if (editedCategory) {
+        const res = await axios.put('/api/categories', {
+          ...data,
+          _id: editedCategory._id,
+        });
+        setEditedCategory(null);
+      } else {
+        await axios.post('/api/categories', data);
+      }
       const res = await axios.get('/api/categories');
       setCategories(res.data);
     } catch (error) {
-      throw new Error(error);
+      console.error(error);
     }
     setName('');
+  }
+
+  function editCategory(category) {
+    setEditedCategory(category);
+    setName(category.name);
+    setParentCategory(category.parent?._id);
   }
 
   return (
     <>
       <h1 className='mb-4'>Categories</h1>
-      <label>New Category name</label>
+      <label>
+        {editedCategory
+          ? `Edit category ${editedCategory.name}`
+          : 'Create new category'}
+      </label>
       <form
         onSubmit={saveCategory}
         className='flex justify-center items-center gap-2'
@@ -78,7 +98,12 @@ const CategoriesPage = ({ data: initialCategories }) => {
                 <td>{category.name}</td>
                 <td>{category?.parent?.name || '----'}</td>
                 <td>
-                  <EditDeleteBtn entity={category._id} />
+                  {category && (
+                    <EditDeleteBtn
+                      entity={category}
+                      handleEdit={editCategory}
+                    />
+                  )}
                 </td>
               </tr>
             ))}
