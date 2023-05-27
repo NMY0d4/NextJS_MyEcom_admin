@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 input,
-textarea {
+textarea,
+select {
   @apply border-2 border-tertiary rounded-md px-2 py-1 w-full;
   @apply mb-2;
 }
@@ -13,7 +14,8 @@ img {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   @apply border-primary;
 }
 

@@ -14,6 +14,10 @@ const ProductSchema = new Schema({
     required: true,
   },
   images: { type: [String] },
+  collectionName: {
+    type: String,
+    default: 'products',
+  },
 });
 
 ProductSchema.set('toJSON', {

@@ -1,8 +1,11 @@
+import EditDeleteBtn from '@/components/ui/EditDeleteBtn';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const CategoriesPage = ({ data: initialCategories }) => {
   const [name, setName] = useState('');
+  const [parentCategory, setParentCategory] = useState('');
+
   const [categories, setCategories] = useState(initialCategories);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
   async function saveCategory(e) {
     e.preventDefault();
     try {
-      await axios.post('/api/categories', { name });
+      await axios.post('/api/categories', { name, parentCategory });
       const res = await axios.get('/api/categories');
       setCategories(res.data);
     } catch (error) {
@@ -43,6 +46,19 @@ const CategoriesPage = ({ data: initialCategories }) => {
           onChange={(e) => setName(e.target.value)}
           value={name}
         />
+        <select
+          className='mb-0 min-w-[12rem] max-w-[20%]'
+          onChange={(e) => setParentCategory(e.target.value)}
+          value={parentCategory}
+        >
+          <option value=''>No parent category</option>
+          {categories.length > 0 &&
+            categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+        </select>
         <button type='submit' className='btn-primary'>
           Save
         </button>
@@ -51,6 +67,8 @@ const CategoriesPage = ({ data: initialCategories }) => {
         <thead>
           <tr>
             <td>Category name</td>
+            <td>Parent category</td>
+            <td></td>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +76,10 @@ const CategoriesPage = ({ data: initialCategories }) => {
             categories.map((category) => (
               <tr key={category._id}>
                 <td>{category.name}</td>
+                <td>{category?.parent?.name || '----'}</td>
+                <td>
+                  <EditDeleteBtn entity={category._id} />
+                </td>
               </tr>
             ))}
         </tbody>
