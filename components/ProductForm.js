@@ -10,19 +10,32 @@ function ProductForm({ product: editProduct, formTitle }) {
   const initialState = {
     productName: '',
     description: '',
+    category: '',
     price: 0,
     images: [],
   };
+
+  const [product, setProduct] = useState(editProduct || initialState);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const router = useRouter();
+  const { images } = product;
 
   useEffect(() => {
     setIsDisabled(false);
   }, []);
 
-  const [product, setProduct] = useState(editProduct || initialState);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const router = useRouter();
-  const { images } = product;
+  useEffect(() => {
+    axios
+      .get('/api/categories')
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        console.error('Error during categories recovery :', err);
+      });
+  }, []); 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +44,7 @@ function ProductForm({ product: editProduct, formTitle }) {
       setProduct({ ...product, [name]: formattedPrice });
     } else {
       setProduct({ ...product, [name]: value });
-    }
+    }    
   };
 
   const saveProduct = async (e) => {
@@ -65,7 +78,7 @@ function ProductForm({ product: editProduct, formTitle }) {
       setProduct({ ...product, images: updatedImages });
       setIsUploading(false);
     }
-  } 
+  }
 
   function updateImagesOrder(newImages) {
     setProduct({ ...product, images: newImages });
@@ -85,7 +98,20 @@ function ProductForm({ product: editProduct, formTitle }) {
           value={product.productName}
           onChange={handleInputChange}
         />
-
+        <label>Category</label>
+        <select
+          value={product.category}
+          name='category'
+          onChange={handleInputChange}
+        >
+          <option value=''>Uncategorized</option>
+          {categories.length > 0 &&
+            categories.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+        </select>
         <label>Photos</label>
         <div className='mb-2 flex flex-wrap gap-3'>
           <ReactSortable

@@ -40,6 +40,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
       console.error(error);
     }
     setName('');
+    setParentCategory('');
   }
 
   function editCategory(category) {
@@ -48,22 +49,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
     setParentCategory(category.parent?._id);
   }
 
-  function deleteCategory(category) {
-    Swal.fire({
-      title: 'Confirmation',
-      text: `Are you sure you want to delete the category ${category.name}?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Si l'utilisateur a confirmé la suppression
-        performDeleteCategory(category);
-      }
-    });
-  }
-
+ 
   function deleteCategory(category) {
     Swal.fire({
       title: 'Confirmation',

@@ -1,11 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import EditDeleteBtn from '@/components/ui/EditDeleteBtn';
 
 function Products({ products }) {
-  console.log(products[0].collection);
   return (
     <>
       <Link className='btn-primary' href={'/products/new'}>
@@ -36,6 +34,7 @@ function Products({ products }) {
 export async function getStaticProps() {
   const response = await axios.get('http://localhost:3000/api/products');
   const products = response.data;
+
   return {
     props: {
       products,

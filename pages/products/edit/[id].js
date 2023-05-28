@@ -10,9 +10,14 @@ export default function EditProductPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`/api/products?id=${id}`);
-      setProduct(response.data);
+      try {
+        const response = await axios.get(`/api/products?id=${id}`);
+        setProduct(response.data);
+      } catch (error) {
+        console.error('Error during product recovery :', error);
+      }
     };
+
     fetchProduct();
   }, [id]);
 
