@@ -1,6 +1,7 @@
 import EditDeleteBtn from '@/components/ui/EditDeleteBtn';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const CategoriesPage = ({ data: initialCategories }) => {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -25,7 +26,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
     try {
       const data = { name, parentCategory };
       if (editedCategory) {
-        const res = await axios.put('/api/categories', {
+        await axios.put('/api/categories', {
           ...data,
           _id: editedCategory._id,
         });
@@ -45,6 +46,66 @@ const CategoriesPage = ({ data: initialCategories }) => {
     setEditedCategory(category);
     setName(category.name);
     setParentCategory(category.parent?._id);
+  }
+
+  function deleteCategory(category) {
+    Swal.fire({
+      title: 'Confirmation',
+      text: `Are you sure you want to delete the category ${category.name}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si l'utilisateur a confirmé la suppression
+        performDeleteCategory(category);
+      }
+    });
+  }
+
+  function deleteCategory(category) {
+    Swal.fire({
+      title: 'Confirmation',
+      text: `Are you sure you want to delete the category ${category.name}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      confirmButtonColor: 'darkRed',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si confirmation
+        performDeleteCategory(category);
+      }
+    });
+  }
+
+  async function performDeleteCategory(category) {
+    try {
+      // Effectuer votre requête de suppression avec axios
+      await axios.delete(`/api/categories?_id=${category._id}`);
+
+      // Mettre à jour la liste des catégories après la suppression
+      const res = await axios.get('/api/categories');
+      setCategories(res.data);
+
+      // Afficher une notification de succès avec SweetAlert2
+      Swal.fire({
+        title: 'Success',
+        text: 'Category deleted successfully',
+        icon: 'success',
+      });
+    } catch (error) {
+      console.error(error);
+      // Afficher une notification d'erreur avec SweetAlert2
+      Swal.fire({
+        title: 'Error',
+        text: 'An error occurred while deleting the category',
+        icon: 'error',
+      });
+    }
   }
 
   return (
@@ -102,6 +163,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
                     <EditDeleteBtn
                       entity={category}
                       handleEdit={editCategory}
+                      handleDelete={deleteCategory}
                     />
                   )}
                 </td>
@@ -113,7 +175,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
   );
 };
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const res = await axios.get('http://localhost:3000/api/categories');
   const { data } = res;
 

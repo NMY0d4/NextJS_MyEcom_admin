@@ -12,7 +12,10 @@ export default async function handle(req, res) {
   if (method === 'POST') {
     const { name, parentCategory } = req.body;
 
-    const categoryDoc = await Category.create({ name, parent: parentCategory });
+    const categoryDoc = await Category.create({
+      name,
+      parent: parentCategory || undefined,
+    });
 
     res.json(categoryDoc);
   }
@@ -24,5 +27,21 @@ export default async function handle(req, res) {
       { name, parent: parentCategory }
     );
     res.json(categoryDoc);
+  }
+
+  if (method === 'DELETE') {
+    if (req.query?._id) {
+      try {
+        await Category.deleteOne({ _id: req.query._id });
+        res.json(true);
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .json({ error: 'An error occurred while deleting the category' });
+      }
+    } else {
+      res.status(400).json({ error: 'Missing category ID' });
+    }
   }
 }
