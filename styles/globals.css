@@ -27,6 +27,10 @@ label {
   @apply text-primary font-semibold;
 }
 
+.btn-default {
+  @apply px-4 py-1 rounded-md bg-genBg text-secondary;
+}
+
 .btn-primary {
   @apply bg-primary text-secondary min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300 border border-primary;
 }
