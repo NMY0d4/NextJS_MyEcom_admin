@@ -99,6 +99,24 @@ const CategoriesPage = ({ data: initialCategories }) => {
     });
   }
 
+  function handlePropertyChange(e) {
+    const { name, value } = e.target;
+    const [propertyType, index] = name.split('-');
+
+    setProperties((prev) => {
+      const updatedProperties = [...prev];
+      const property = updatedProperties[index];
+
+      if (propertyType === 'propertyName') {
+        property.name = value;
+      } else if (propertyType === 'propertyValues') {
+        property.values = value;
+      }
+
+      return updatedProperties;
+    });
+  }
+
   return (
     <>
       <h1 className='mb-4'>Categories</h1>
@@ -142,13 +160,22 @@ const CategoriesPage = ({ data: initialCategories }) => {
             Add new property
           </button>
           {properties.length > 0 &&
-            properties.map((property) => (
-              <div className='flex gap-2'>
+            properties.map((property, i) => (
+              <div key={i} className='flex gap-2'>
                 <input
                   type='text'
+                  name={`propertyName-${i}`}
+                  value={property.name}
+                  onChange={handlePropertyChange}
                   placeholder='property name (example: color)'
                 />
-                <input type='text' placeholder='values, comma separated' />
+                <input
+                  type='text'
+                  name={`propertyValues-${i}`}
+                  value={property.values}
+                  onChange={handlePropertyChange}
+                  placeholder='values, comma separated'
+                />
               </div>
             ))}
         </div>
