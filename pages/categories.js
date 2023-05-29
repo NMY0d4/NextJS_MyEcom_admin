@@ -17,7 +17,14 @@ const CategoriesPage = ({ data: initialCategories }) => {
   async function saveCategory(e) {
     e.preventDefault();
     try {
-      const data = { name, parentCategory };
+      const data = {
+        name,
+        parentCategory,
+        properties: properties.map((p) => ({
+          name: p.name,
+          values: p.values.split(','),
+        })),
+      };
       if (editedCategory) {
         await axios.put('/api/categories', {
           ...data,
@@ -34,18 +41,26 @@ const CategoriesPage = ({ data: initialCategories }) => {
     }
     setName('');
     setParentCategory('');
+    setProperties([]);
   }
 
   function handleCancel() {
     setEditedCategory(null);
     setName('');
     setParentCategory('');
+    setProperties([]);
   }
 
   function editCategory(category) {
     setEditedCategory(category);
     setName(category.name);
     setParentCategory(category.parent?._id);
+    setProperties(
+      category.properties.map(({ name, values }) => ({
+        name,
+        values: values.join(','),
+      }))
+    );
   }
 
   function deleteCategory(category) {
