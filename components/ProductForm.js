@@ -11,6 +11,7 @@ function ProductForm({ product: editProduct, formTitle }) {
     productName: '',
     description: '',
     category: '',
+    properties: {},
     price: 0,
     images: [],
   };
@@ -20,7 +21,8 @@ function ProductForm({ product: editProduct, formTitle }) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [categories, setCategories] = useState([]);
   const router = useRouter();
-  const { images } = product;
+
+  const { images, category, properties: productProperties } = product;
 
   useEffect(() => {
     setIsDisabled(false);
@@ -35,7 +37,7 @@ function ProductForm({ product: editProduct, formTitle }) {
       .catch((err) => {
         console.error('Error during categories recovery :', err);
       });
-  }, []); 
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +46,7 @@ function ProductForm({ product: editProduct, formTitle }) {
       setProduct({ ...product, [name]: formattedPrice });
     } else {
       setProduct({ ...product, [name]: value });
-    }    
+    }
   };
 
   const saveProduct = async (e) => {
@@ -84,12 +86,36 @@ function ProductForm({ product: editProduct, formTitle }) {
     setProduct({ ...product, images: newImages });
   }
 
+  const propertiesToFill = [];
+  if (categories.length > 0 && category) {
+    let catInfo = categories.find(({ _id }) => _id === category);
+    propertiesToFill.push(...catInfo.properties);
+    while (catInfo?.parent?._id) {
+      const parentCat = categories.find(
+        ({ _id }) => _id === catInfo?.parent?._id
+      );
+      propertiesToFill.push(...parentCat.properties);
+      catInfo = parentCat;
+    }
+  }
+
+  function setProductProp(propName, value) {
+    setProduct((prevProduct) => {
+      const updatedProperties = {
+        ...prevProduct.properties,
+        [propName]: value,
+      };
+      return { ...prevProduct, properties: updatedProperties };
+    });
+  }
+
   return (
     <div className='w-[80%] mx-auto'>
       <h1 className='text-primary mb-3'>
         {formTitle ? `${formTitle} "${product.productName}"` : 'New Product'}
       </h1>
       <form onSubmit={saveProduct}>
+        {/* --------------- PRODUCT NAME --------------- */}
         <label>Product name</label>
         <input
           type='text'
@@ -98,6 +124,7 @@ function ProductForm({ product: editProduct, formTitle }) {
           value={product.productName}
           onChange={handleInputChange}
         />
+        {/* --------------- CATEGORY --------------- */}
         <label>Category</label>
         <select
           value={product.category}
@@ -112,6 +139,24 @@ function ProductForm({ product: editProduct, formTitle }) {
               </option>
             ))}
         </select>
+        {/* ----------- PROPERTIES --------------- */}
+        {propertiesToFill.length > 0 &&
+          propertiesToFill.map((p) => (
+            <div key={p._id} className='flex gap-1'>
+              <div> {p.name}</div>
+              <select
+                value={productProperties && productProperties[p.name]}
+                onChange={(e) => setProductProp(p.name, e.target.value)}
+              >
+                {p.values.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        {/* --------------- PHOTOS --------------- */}
         <label>Photos</label>
         <div className='mb-2 flex flex-wrap gap-3'>
           <ReactSortable
@@ -142,7 +187,7 @@ function ProductForm({ product: editProduct, formTitle }) {
             <input type='file' onChange={uploadImages} className='hidden' />
           </label>
         </div>
-
+        {/* --------------- DESCRIPTION --------------- */}
         <label>Description</label>
         <textarea
           name='description'
