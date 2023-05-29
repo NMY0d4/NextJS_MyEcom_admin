@@ -14,13 +14,6 @@ const CategoriesPage = ({ data: initialCategories }) => {
     setCategories(initialCategories);
   }, [initialCategories]);
 
-  // useEffect(() => {
-  //   setCategories(data);
-  //   // axios.get('/api/categories').then((result) => {
-  //   //   setCategories(result.data);
-  //   // });
-  // }, []);
-
   async function saveCategory(e) {
     e.preventDefault();
     try {
@@ -39,6 +32,12 @@ const CategoriesPage = ({ data: initialCategories }) => {
     } catch (error) {
       console.error(error);
     }
+    setName('');
+    setParentCategory('');
+  }
+
+  function handleCancel() {
+    setEditedCategory(null);
     setName('');
     setParentCategory('');
   }
@@ -117,6 +116,12 @@ const CategoriesPage = ({ data: initialCategories }) => {
     });
   }
 
+  function removeProperty(iToRemove) {
+    setProperties((prev) => {
+      return [...prev].filter((_, i) => i !== iToRemove);
+    });
+  }
+
   return (
     <>
       <h1 className='mb-4'>Categories</h1>
@@ -155,15 +160,16 @@ const CategoriesPage = ({ data: initialCategories }) => {
           <button
             type='button'
             onClick={addProperty}
-            className='btn-default text-sm'
+            className='btn-default text-sm mb-2'
           >
             Add new property
           </button>
           {properties.length > 0 &&
             properties.map((property, i) => (
-              <div key={i} className='flex gap-2'>
+              <div key={i} className='flex gap-2 mb-2'>
                 <input
                   type='text'
+                  className='mb-0'
                   name={`propertyName-${i}`}
                   value={property.name}
                   onChange={handlePropertyChange}
@@ -171,45 +177,66 @@ const CategoriesPage = ({ data: initialCategories }) => {
                 />
                 <input
                   type='text'
+                  className='mb-0'
                   name={`propertyValues-${i}`}
                   value={property.values}
                   onChange={handlePropertyChange}
                   placeholder='values, comma separated'
                 />
+                <button
+                  type='button'
+                  onClick={() => removeProperty(i)}
+                  className='btn-default'
+                >
+                  Remove
+                </button>
               </div>
             ))}
         </div>
-        <button type='submit' className='btn-primary'>
-          Save
-        </button>
+        <div className='flex gap-2'>
+          {editedCategory && (
+            <button
+              type='button'
+              onClick={handleCancel}
+              className='btn-default'
+            >
+              Cancel
+            </button>
+          )}
+          <button type='submit' className='btn-primary'>
+            Save
+          </button>
+        </div>
       </form>
-      <table className='basic mt-4'>
-        <thead>
-          <tr>
-            <td>Category name</td>
-            <td>Parent category</td>
-            <td></td>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <tr key={category._id}>
-                <td>{category.name}</td>
-                <td>{category?.parent?.name || '----'}</td>
-                <td>
-                  {category && (
-                    <EditDeleteBtn
-                      entity={category}
-                      handleEdit={editCategory}
-                      handleDelete={deleteCategory}
-                    />
-                  )}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {!editedCategory && (
+        <table className='basic mt-4'>
+          <thead>
+            <tr>
+              <td>Category name</td>
+              <td>Parent category</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <tr key={category._id}>
+                  <td>{category.name}</td>
+                  <td>{category?.parent?.name || '----'}</td>
+                  <td>
+                    {category && (
+                      <EditDeleteBtn
+                        entity={category}
+                        handleEdit={editCategory}
+                        handleDelete={deleteCategory}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };

@@ -28,7 +28,11 @@ label {
 }
 
 .btn-default {
-  @apply px-4 py-1 rounded-md bg-genBg text-secondary;
+  @apply px-4 py-1 rounded-md bg-genBg text-secondary transition duration-300 border border-genBg;
+}
+
+.btn-default:hover {
+  @apply bg-secondary text-genBg;
 }
 
 .btn-primary {
@@ -36,7 +40,7 @@ label {
 }
 
 .btn-primary-danger {
-  @apply bg-danger text-secondary min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300 border border-primary;
+  @apply bg-danger text-secondary min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300;
 }
 
 .btn-primary-danger:hover {
