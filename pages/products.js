@@ -31,15 +31,32 @@ function Products({ products }) {
   );
 }
 
-export async function getStaticProps() {
-  const response = await axios.get('http://localhost:3000/api/products');
-  const products = response.data;
+export async function getServerSideProps({ req }) {
+  try {
+    const response = await axios.get('http://localhost:3000/api/products', {
+      withCredentials: true,
+      headers: {
+        Cookie: req.headers.cookie,
+      },
+    });
+    const products = response.data;
 
-  return {
-    props: {
-      products,
-    },
-  };
+    return {
+      props: {
+        products,
+      },
+    };
+  } catch (error) {
+    console.error(error.response?.data?.error); // Affiche l'erreur dans la console du navigateur
+
+    // Redirige l'utilisateur vers la page de login
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 }
 
 export default Products;

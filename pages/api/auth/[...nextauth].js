@@ -46,7 +46,7 @@ export default NextAuth(authOptions);
 export async function isAdminRequest(req, res) {
   const session = await getServerSession(req, res, authOptions);
   if (session.user.role !== 'admin') {
-    throw new Error('Not admin');
+    res.status(401).json({ error: 'Not an admin' });
   }
   return true;
 }

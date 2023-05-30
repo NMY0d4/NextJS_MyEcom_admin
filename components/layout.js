@@ -3,12 +3,21 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
+
+  const handleSignIn = async () => {
+    try {
+      await signIn('google');
+    } catch (error) {
+      console.error('Error during sign in:', error);
+    }
+  };
+
   if (!session) {
     return (
       <div className='bg-genBg w-screen h-screen flex items-center'>
         <div className='text-center w-full'>
           <button
-            onClick={() => signIn('google')}
+            onClick={handleSignIn}
             className='bg-secondary font-semibold p-2 px-4 rounded-lg hover:bg-tertiary hover:text-secondary transition duration-300'
           >
             Login with Google

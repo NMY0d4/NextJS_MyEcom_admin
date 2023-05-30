@@ -15,6 +15,10 @@ const Nav = () => {
   const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-l-lg`;
   const router = useRouter();
   const { pathname } = router;
+  async function logout() {
+    await router.push('/');
+    await signOut();
+  }
 
   return (
     <aside className='text-secondary p-4 pr-0'>
@@ -61,7 +65,7 @@ const Nav = () => {
           <HiOutlineCog size='1.5rem' />
           Settings
         </Link>
-        <button onClick={signOut} className={inactiveLink}>
+        <button onClick={logout} className={inactiveLink}>
           <BiLogOut size='1.5rem' />
           Logout
         </button>
