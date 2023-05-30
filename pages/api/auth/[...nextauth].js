@@ -1,9 +1,11 @@
-import clientPromise from '@/lib/mongodv';
+import clientPromise from '@/lib/mongodb';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-async function getUserFromMongoDB(email) {
+// const adminEmails = ['newmastyoda27@gmail.com'];
+
+export async function getUserFromMongoDB(email) {
   const client = await clientPromise;
   const db = client.db();
 
@@ -11,7 +13,7 @@ async function getUserFromMongoDB(email) {
   return user;
 }
 
-export default NextAuth({
+export const authOptions = {
   providers: [
     // OAuth authentication providers...
     GoogleProvider({
@@ -23,14 +25,20 @@ export default NextAuth({
   callbacks: {
     session: async (session, user) => {
       if (user) {
-        const { email } = user; // Assurez-vous que 'user' est défini avant de déstructurer ses propriétés
+        const { email } = user;
         const userFromDB = await getUserFromMongoDB(email);
         session.user = {
           ...user,
-          ...userFromDB,
+          role: userFromDB.role,
         };
       }
-      return session;
+      if (session.user.role === 'admin') {
+        return session;
+      } else {
+        return false;
+      }
     },
   },
-});
+};
+
+export default NextAuth(authOptions);

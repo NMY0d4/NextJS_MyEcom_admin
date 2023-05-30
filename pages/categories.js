@@ -223,6 +223,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
           </button>
         </div>
       </form>
+      {/* -------  DISPLAY CAT  -------------- */}
       {!editedCategory && (
         <table className='basic mt-4'>
           <thead>
@@ -256,10 +257,14 @@ const CategoriesPage = ({ data: initialCategories }) => {
   );
 };
 
-export async function getStaticProps() {
-  const res = await axios.get('http://localhost:3000/api/categories');
+export async function getServerSideProps({ req }) {
+  const res = await axios.get('http://localhost:3000/api/categories', {
+    withCredentials: true,
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
   const { data } = res;
-
   return {
     props: { data },
   };

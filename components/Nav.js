@@ -1,4 +1,4 @@
-import { BiStore } from 'react-icons/bi';
+import { BiLogOut, BiStore } from 'react-icons/bi';
 import { BsBoxes } from 'react-icons/bs';
 import { MdOutlineCategory } from 'react-icons/md';
 import {
@@ -8,6 +8,7 @@ import {
 } from 'react-icons/hi';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
 
 const Nav = () => {
   const inactiveLink = 'flex items-center gap-2 p-1';
@@ -60,6 +61,10 @@ const Nav = () => {
           <HiOutlineCog size='1.5rem' />
           Settings
         </Link>
+        <button onClick={signOut} className={inactiveLink}>
+          <BiLogOut size='1.5rem' />
+          Logout
+        </button>
       </nav>
     </aside>
   );
