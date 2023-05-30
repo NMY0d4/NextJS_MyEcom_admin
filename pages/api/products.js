@@ -1,10 +1,11 @@
 import { mongooseConnect } from '@/lib/mongoose';
 import { Product } from '@/models/Product';
-// import mongoose from 'mongoose';
+import { isAdminRequest } from './auth/[...nextauth]';
 
 export default async function handle(req, res) {
   const { method } = req;
   await mongooseConnect();
+  await isAdminRequest(req, res);
 
   if (method === 'GET') {
     if (req.query?.id) {
@@ -27,7 +28,7 @@ export default async function handle(req, res) {
   if (method === 'DELETE') {
     if (req.query?.id) {
       await Product.deleteOne({ _id: req.query?.id });
-    res.json(true);
+      res.json(true);
     }
   }
 }

@@ -1,11 +1,15 @@
 import multiparty from 'multiparty';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-// import { getRandomNumber } from '@/lib/utils';
 import { v4 as uuidv4 } from 'uuid';
 import mime from 'mime-types';
 import fs from 'fs';
+import { mongooseConnect } from '@/lib/mongoose';
+import { isAdminRequest } from './auth/[...nextauth]';
 
 export default async function handle(req, res) {
+  await mongooseConnect();
+  await isAdminRequest(req, res);
+
   const form = new multiparty.Form();
   const bucketName = 'nextjs-gmweb-ecommerce';
 
