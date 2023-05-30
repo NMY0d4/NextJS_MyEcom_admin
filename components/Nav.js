@@ -9,8 +9,10 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
+import Logo from './ui/Logo';
+import { useEffect } from 'react';
 
-const Nav = ({ show }) => {
+const Nav = ({ show, onClose }) => {
   const inactiveLink = 'flex items-center gap-2 p-1';
   const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-md`;
   const router = useRouter();
@@ -20,16 +22,30 @@ const Nav = ({ show }) => {
     await signOut();
   }
 
+  // Écouteur d'événement pour la fermeture de la navigation lorsque la route change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (show) {
+        onClose();
+      }
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events, onClose, show]);
+
   return (
     <aside
       className={`${
         show ? 'left-0' : '-left-full'
       } top-0 text-secondary p-4 fixed z-10 w-full h-full bg-genBg md:static md:w-auto transition-all duration-300`}
     >
-      <Link href='/' className={`${inactiveLink} mb-6 mr-3`}>
-        <BiStore size='1.5rem' />
-        <span>EcommerceAdmin</span>
-      </Link>
+      <div className='mb-6 mr4'>
+        <Logo />
+      </div>
 
       <nav className='flex flex-col gap-2'>
         <Link

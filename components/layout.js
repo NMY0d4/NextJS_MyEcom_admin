@@ -2,6 +2,7 @@ import Nav from '@/components/Nav';
 import { useSession, signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import Logo from './ui/Logo';
 
 export default function Layout({ children }) {
   const [showNav, setShowNav] = useState(false);
@@ -32,11 +33,14 @@ export default function Layout({ children }) {
 
   return (
     <div className='bg-genBg w-screen min-h-screen'>
-      <button onClick={() => setShowNav(true)}>
-        <RxHamburgerMenu size='1.8rem' />
-      </button>
+      <div className='md:hidden flex justify-between items-center p-2'>
+        <button onClick={() => setShowNav(true)}>
+          <RxHamburgerMenu size='1.8rem' />
+        </button>
+        <Logo />
+      </div>
       <div className='flex'>
-        <Nav show={showNav} />
+        <Nav show={showNav} onClose={() => setShowNav(false)} />
         <div className='bg-secondary text-primary flex-grow m-2 ml-0 rounded-lg p-4'>
           {children}
         </div>
