@@ -1,7 +1,10 @@
 import Nav from '@/components/Nav';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
+import { useState } from 'react';
+import { RxHamburgerMenu } from 'react-icons/rx';
 
 export default function Layout({ children }) {
+  const [showNav, setShowNav] = useState(false);
   const { data: session } = useSession();
 
   const handleSignIn = async () => {
@@ -28,10 +31,15 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className='bg-genBg w-screen min-h-screen flex'>
-      <Nav />
-      <div className='bg-secondary text-primary flex-grow m-2 ml-0 rounded-lg p-4'>
-        {children}
+    <div className='bg-genBg w-screen min-h-screen'>
+      <button onClick={() => setShowNav(true)}>
+        <RxHamburgerMenu size='1.8rem' />
+      </button>
+      <div className='flex'>
+        <Nav show={showNav} />
+        <div className='bg-secondary text-primary flex-grow m-2 ml-0 rounded-lg p-4'>
+          {children}
+        </div>
       </div>
     </div>
   );

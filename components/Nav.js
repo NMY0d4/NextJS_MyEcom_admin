@@ -10,9 +10,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 
-const Nav = () => {
+const Nav = ({ show }) => {
   const inactiveLink = 'flex items-center gap-2 p-1';
-  const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-l-lg`;
+  const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-md`;
   const router = useRouter();
   const { pathname } = router;
   async function logout() {
@@ -21,7 +21,11 @@ const Nav = () => {
   }
 
   return (
-    <aside className='text-secondary p-4 pr-0'>
+    <aside
+      className={`${
+        show ? 'left-0' : '-left-full'
+      } top-0 text-secondary p-4 fixed z-10 w-full h-full bg-genBg md:static md:w-auto transition-all duration-300`}
+    >
       <Link href='/' className={`${inactiveLink} mb-6 mr-3`}>
         <BiStore size='1.5rem' />
         <span>EcommerceAdmin</span>
