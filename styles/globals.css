@@ -57,15 +57,15 @@ table.basic a:hover {
 }
 
 table.basic {
-  @apply w-full;
+  @apply w-full rounded-sm shadow-sm;
 }
 
 table.basic thead tr td {
-  @apply bg-tertiary font-semibold;
+  @apply text-sm font-semibold uppercase border-b border-tertiary px-4 py-2;
 }
 
 table.basic tr td {
-  @apply border border-genBg p-1;
+  @apply px-4 py-2;
 }
 
 table.basic a {
