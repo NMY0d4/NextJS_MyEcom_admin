@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 import Image from 'next/legacy/image';
 
 export default function Home() {
@@ -6,6 +7,9 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Admin ecommerce</title>
+      </Head>
       <div className='flex justify-between'>
         <h2>
           Hello, <b>{session?.user?.name}</b>
