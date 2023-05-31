@@ -1,4 +1,4 @@
-import { BiLogOut, BiStore } from 'react-icons/bi';
+import { BiLogOut } from 'react-icons/bi';
 import { BsBoxes } from 'react-icons/bs';
 import { MdOutlineCategory } from 'react-icons/md';
 import {
@@ -7,33 +7,41 @@ import {
   HiOutlineHome,
 } from 'react-icons/hi';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 import Logo from './ui/Logo';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Nav = ({ show, onClose }) => {
   const inactiveLink = 'flex items-center gap-2 p-1';
   const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-md`;
   const router = useRouter();
-  const { pathname } = router;
+  const { pathname, isReady } = router;
+  const [isLoading, setIsLoading] = useState(false);
+
   async function logout() {
     await router.push('/');
     await signOut();
   }
 
-  // Écouteur d'événement pour la fermeture de la navigation lorsque la route change
   useEffect(() => {
-    const handleRouteChange = () => {
+    const handleRouteChangeStart = () => {
+      setIsLoading(true);
+    };
+
+    const handleRouteChangeComplete = () => {
+      setIsLoading(false);
       if (show) {
         onClose();
       }
     };
 
-    router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
 
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
     };
   }, [router.events, onClose, show]);
 
@@ -43,44 +51,54 @@ const Nav = ({ show, onClose }) => {
         show ? 'left-0' : '-left-full'
       } top-0 text-secondary p-4 fixed z-10 w-full h-full bg-genBg md:static md:w-auto transition-all duration-300`}
     >
-      <div className='mb-6 mr4'>
-        <Logo />
-      </div>
-
+      {/* ... */}
       <nav className='flex flex-col gap-2'>
         <Link
           href={'/'}
-          className={pathname === '/' ? activeLink : inactiveLink}
+          className={`${pathname === '/' ? activeLink : inactiveLink} ${
+            isLoading ? 'disabled-link' : ''
+          }`}
+          disabled={!isReady || isLoading}
         >
           <HiOutlineHome size='1.5rem' />
           Dashboard
         </Link>
         <Link
           href={'/products'}
-          className={pathname.includes('/products') ? activeLink : inactiveLink}
+          className={`${pathname === '/products' ? activeLink : inactiveLink} ${
+            isLoading ? 'disabled-link' : ''
+          }`}
+          disabled={!isReady || isLoading}
         >
           <BsBoxes size='1.5rem' />
           Products
         </Link>
         <Link
           href={'/categories'}
-          className={
-            pathname.includes('/categories') ? activeLink : inactiveLink
-          }
+          className={`${
+            pathname === '/categories' ? activeLink : inactiveLink
+          } ${isLoading ? 'disabled-link' : ''}`}
+          disabled={!isReady || isLoading}
         >
           <MdOutlineCategory size='1.5rem' />
           Categories
         </Link>
         <Link
           href={'/orders'}
-          className={pathname.includes('/orders') ? activeLink : inactiveLink}
+          className={`${pathname === '/orders' ? activeLink : inactiveLink} ${
+            isLoading ? 'disabled-link' : ''
+          }`}
+          disabled={!isReady || isLoading}
         >
           <HiOutlineClipboardList size='1.5rem' />
           Orders
         </Link>
         <Link
           href={'/settings'}
-          className={pathname.includes('/settings') ? activeLink : inactiveLink}
+          className={`${pathname === '/settings' ? activeLink : inactiveLink} ${
+            isLoading ? 'disabled-link' : ''
+          }`}
+          disabled={!isReady || isLoading}
         >
           <HiOutlineCog size='1.5rem' />
           Settings

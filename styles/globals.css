@@ -71,3 +71,9 @@ table.basic tr td {
 table.basic a {
   @apply bg-primary text-secondary text-sm py-1 px-2 rounded-md inline-flex gap-1 transition duration-300 border border-primary items-center mr-2;
 }
+
+.disabled-link {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
