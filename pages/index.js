@@ -1,9 +1,8 @@
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import Image from 'next/legacy/image';
 
 export default function Home() {
   const { data: session } = useSession();
-  // console.log(session);
 
   return (
     <>
@@ -12,12 +11,17 @@ export default function Home() {
           Hello, <b>{session?.user?.name}</b>
         </h2>
         <div className='flex bg-gray-300 gap-1 text-black rounded-lg overflow-hidden'>
-          <img
-            src={session.user.image}
-            alt='photo profil'
-            className='w-8 h-8'
-          />
-          <span className='py-1 px-2'>{session?.user?.name}</span>
+          <div className='relative w-8 h-full'>
+            <Image
+              src={session.user.image}
+              alt='photo profil'
+              layout='fill'
+              objectFit='contain'
+            />
+          </div>
+          <span className='py-1 px-1 flex items-center font-semibold'>
+            {session?.user?.name}
+          </span>
         </div>
       </div>
     </>

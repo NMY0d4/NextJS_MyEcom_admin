@@ -7,6 +7,7 @@ const EditDeleteBtn = ({ entity, handleEdit, handleDelete }) => {
     <>
       <Link
         href={`/${entity.collectionName}`}
+        className='mb-1 md:mb-0'
         onClick={() => handleEdit(entity)}
       >
         <AiOutlineEdit />
@@ -22,7 +23,10 @@ const EditDeleteBtn = ({ entity, handleEdit, handleDelete }) => {
     </>
   ) : (
     <>
-      <Link href={`/${entity.collectionName}/edit/${entity._id}`}>
+      <Link
+        className='mb-1 md:mb-0'
+        href={`/${entity.collectionName}/edit/${entity._id}`}
+      >
         <AiOutlineEdit />
         Edit
       </Link>

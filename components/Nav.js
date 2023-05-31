@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import Logo from './ui/Logo';
 
 const Nav = ({ show, onClose }) => {
-  const inactiveLink = 'flex items-center gap-2 p-1';
+  const inactiveLink = 'flex items-center gap-2 p-1 hover:font-semibold';
   const activeLink = `${inactiveLink} bg-secondary text-primary font-semibold rounded-md`;
   const router = useRouter();
   const { pathname, isReady } = router;

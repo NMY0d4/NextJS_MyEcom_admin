@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['nextjs-gmweb-ecommerce.s3.amazonaws.com'],
+    domains: [
+      'nextjs-gmweb-ecommerce.s3.amazonaws.com',
+      'lh3.googleusercontent.com',
+    ],
   },
 };
 
