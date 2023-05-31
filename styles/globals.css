@@ -20,11 +20,15 @@ select:focus {
 }
 
 h1 {
-  @apply text-3xl font-semibold;
+  @apply text-primary text-3xl font-semibold;
+}
+
+h2 {
+  @apply text-xl font-semibold pt-4;
 }
 
 label {
-  @apply text-primary font-semibold;
+  @apply text-primary text-sm font-semibold;
 }
 
 .btn-default {
@@ -40,11 +44,11 @@ label {
 }
 
 .btn-primary-danger {
-  @apply bg-danger text-secondary min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300;
+  @apply bg-red-200 text-danger min-w-[8rem] font-semibold px-4 py-1 rounded-md transition duration-300;
 }
 
 .btn-primary-danger:hover {
-  @apply scale-110 transition duration-300;
+  @apply bg-danger text-red-200;
 }
 
 .btn-primary:hover,

@@ -3,7 +3,6 @@ import React from 'react';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 
 const EditDeleteBtn = ({ entity, handleEdit, handleDelete }) => {
-  
   return entity.collectionName === 'categories' ? (
     <>
       <Link

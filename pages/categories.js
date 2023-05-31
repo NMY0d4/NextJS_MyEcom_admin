@@ -171,7 +171,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
         </div>
         <div className='mb-4'>
           {/* ------- PROPERTY ------------------ */}
-          <label className='block'>Properties</label>
+          <h2 className='block pb-2'>Properties</h2>
           <button
             type='button'
             onClick={addProperty}
@@ -201,7 +201,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
                 <button
                   type='button'
                   onClick={() => removeProperty(i)}
-                  className='btn-default'
+                  className='btn-primary-danger'
                 >
                   Remove
                 </button>

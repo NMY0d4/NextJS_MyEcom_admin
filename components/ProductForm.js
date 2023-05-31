@@ -111,7 +111,7 @@ function ProductForm({ product: editProduct, formTitle }) {
 
   return (
     <div className='w-[80%] mx-auto'>
-      <h1 className='text-primary mb-3'>
+      <h1 className='mb-5'>
         {formTitle ? `${formTitle} "${product.productName}"` : 'New Product'}
       </h1>
       <form onSubmit={saveProduct}>
@@ -140,22 +140,29 @@ function ProductForm({ product: editProduct, formTitle }) {
             ))}
         </select>
         {/* ----------- PROPERTIES --------------- */}
-        {propertiesToFill.length > 0 &&
-          propertiesToFill.map((p) => (
-            <div key={p._id} className='flex gap-1'>
-              <div> {p.name}</div>
-              <select
-                value={productProperties && productProperties[p.name]}
-                onChange={(e) => setProductProp(p.name, e.target.value)}
-              >
-                {p.values.map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
+        {propertiesToFill.length > 0 && <h2>Properties</h2>}
+        <div className='flex wrap gap-3 pb-3'>
+          {propertiesToFill.length > 0 &&
+            propertiesToFill.map((p) => (
+              <div key={p._id}>
+                <div>
+                  <label>
+                    {`${p.name[0].toUpperCase()}${p.name.substring(1)}`}
+                  </label>
+                  <select
+                    value={productProperties && productProperties[p.name]}
+                    onChange={(e) => setProductProp(p.name, e.target.value)}
+                  >
+                    {p.values.map((v) => (
+                      <option key={v} value={v}>
+                        {v}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            ))}
+        </div>
         {/* --------------- PHOTOS --------------- */}
         <label>Photos</label>
         <div className='mb-2 flex flex-wrap gap-3'>
@@ -166,7 +173,7 @@ function ProductForm({ product: editProduct, formTitle }) {
           >
             {images?.length > 0 &&
               images.map((link) => (
-                <div key={link} className='h-24'>
+                <div key={link} className='h-24 shadow-md rounded-lg'>
                   <img
                     src={link}
                     alt={`GM_Web nextJS ecommerce produit ${product.productName}`}
@@ -181,7 +188,7 @@ function ProductForm({ product: editProduct, formTitle }) {
             </div>
           )}
 
-          <label className='w-24 h-24 px-2 flex items-center justify-center gap-2 text-tertiary rounded-lg bg-white cursor-pointer'>
+          <label className='w-24 h-24 px-2 flex flex-col items-center justify-center gap-2 text-tertiary rounded-lg bg-white cursor-pointer shadow-md'>
             <HiOutlineUpload size='2rem' />
             <div>Upload</div>
             <input type='file' onChange={uploadImages} className='hidden' />

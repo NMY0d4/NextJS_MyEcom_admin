@@ -41,7 +41,7 @@ export default function Layout({ children }) {
       </div>
       <div className='flex min-h-screen'>
         <Nav show={showNav} onClose={() => setShowNav(false)} />
-        <div className='bg-secondary text-primary flex-grow m-2 ml-0 rounded-lg p-4'>
+        <div className='bg-secondary text-primary flex-grow md:m-2 md:ml-0 md:rounded-lg p-4'>
           {children}
         </div>
       </div>

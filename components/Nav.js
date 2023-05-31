@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Logo from './ui/Logo';
 
 const Nav = ({ show, onClose }) => {
   const inactiveLink = 'flex items-center gap-2 p-1';
@@ -53,7 +54,10 @@ const Nav = ({ show, onClose }) => {
         show ? 'left-0' : '-left-full'
       } top-0 text-secondary p-4 fixed z-10 w-full h-full bg-genBg md:static md:w-auto transition-all duration-300`}
     >
-      <nav className='flex flex-col gap-2'>
+      <nav className='flex flex-col gap-2 mt-10 ml-5 md:mt-auto md:ml-auto'>
+        <div className='hidden md:block mb-5'>
+          <Logo />
+        </div>
         <Link
           href={'/'}
           className={`${pathname === '/' ? activeLink : inactiveLink} ${
