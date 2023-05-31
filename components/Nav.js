@@ -8,7 +8,6 @@ import {
 } from 'react-icons/hi';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import Logo from './ui/Logo';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -18,8 +17,10 @@ const Nav = ({ show, onClose }) => {
   const router = useRouter();
   const { pathname, isReady } = router;
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   async function logout() {
+    setIsLoggingOut(true);
     await router.push('/');
     await signOut();
   }
@@ -31,9 +32,10 @@ const Nav = ({ show, onClose }) => {
 
     const handleRouteChangeComplete = () => {
       setIsLoading(false);
-      if (show) {
+      if (show && !isLoggingOut) {
         onClose();
       }
+      setIsLoggingOut(false);
     };
 
     router.events.on('routeChangeStart', handleRouteChangeStart);
@@ -43,7 +45,7 @@ const Nav = ({ show, onClose }) => {
       router.events.off('routeChangeStart', handleRouteChangeStart);
       router.events.off('routeChangeComplete', handleRouteChangeComplete);
     };
-  }, [router.events, onClose, show]);
+  }, [router.events, onClose, show, isLoggingOut]);
 
   return (
     <aside
@@ -51,7 +53,6 @@ const Nav = ({ show, onClose }) => {
         show ? 'left-0' : '-left-full'
       } top-0 text-secondary p-4 fixed z-10 w-full h-full bg-genBg md:static md:w-auto transition-all duration-300`}
     >
-      {/* ... */}
       <nav className='flex flex-col gap-2'>
         <Link
           href={'/'}
@@ -103,7 +104,10 @@ const Nav = ({ show, onClose }) => {
           <HiOutlineCog size='1.5rem' />
           Settings
         </Link>
-        <button onClick={logout} className={inactiveLink}>
+        <button
+          onClick={logout}
+          className={`${inactiveLink} ${isLoading ? 'disabled-link' : ''}`}
+        >
           <BiLogOut size='1.5rem' />
           Logout
         </button>
