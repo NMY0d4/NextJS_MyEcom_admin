@@ -6,6 +6,21 @@ export default function Orders() {
   useEffect(() => {
     axios.get('/api/orders').then((res) => setOrders(res.data));
   }, []);
+
+  function formatOrderDate(dateString) {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false,
+    });
+    return formattedDate;
+  }
+
   return (
     <>
       <h1>Orders</h1>
@@ -21,7 +36,7 @@ export default function Orders() {
           {orders.length > 0 &&
             orders.map((order) => (
               <tr key={order._id}>
-                <td>{order.createdAt}</td>
+                <td>{formatOrderDate(order.createdAt)}</td>
                 <td>
                   {order.name} - {order.email}
                   <br />
