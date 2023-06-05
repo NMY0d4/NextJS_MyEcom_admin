@@ -28,6 +28,7 @@ export default function Orders() {
         <thead>
           <tr>
             <th>Date</th>
+            <th>Paid</th>
             <th>Recipient</th>
             <th>Products</th>
           </tr>
@@ -37,6 +38,9 @@ export default function Orders() {
             orders.map((order) => (
               <tr key={order._id}>
                 <td>{formatOrderDate(order.createdAt)}</td>
+                <td className={order.paid ? 'text-green-600' : 'text-red-600'}>
+                  {order.paid ? 'YES' : 'NO'}
+                </td>
                 <td>
                   {order.name} - {order.email}
                   <br />
