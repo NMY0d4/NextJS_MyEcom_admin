@@ -22,7 +22,9 @@ const CategoriesPage = ({ data: initialCategories }) => {
         parentCategory,
         properties: properties.map((p) => ({
           name: p.name,
-          values: p.values.split(',').map((value) => value.trim()),
+          values: p.values
+            .split(',')
+            .map((value) => value.trim().toLowerCase()),
         })),
       };
       if (editedCategory) {
@@ -122,9 +124,9 @@ const CategoriesPage = ({ data: initialCategories }) => {
       const property = updatedProperties[index];
 
       if (propertyType === 'propertyName') {
-        property.name = valuevalue;
+        property.name = value;
       } else if (propertyType === 'propertyValues') {
-        property.values = value.trim();
+        property.values = value;
       }
 
       return updatedProperties;

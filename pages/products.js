@@ -47,9 +47,9 @@ export async function getServerSideProps({ req }) {
       },
     };
   } catch (error) {
-    console.error(error.response?.data?.error); // Affiche l'erreur dans la console du navigateur
+    console.error(error.response?.data?.error); // Displays error in browser console
 
-    // Redirige l'utilisateur vers la page de login
+    // Redirects user to login page
     return {
       redirect: {
         destination: '/',
