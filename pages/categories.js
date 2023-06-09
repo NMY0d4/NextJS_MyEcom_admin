@@ -22,7 +22,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
         parentCategory,
         properties: properties.map((p) => ({
           name: p.name,
-          values: p.values.split(','),
+          values: p.values.split(',').map((value) => value.trim()),
         })),
       };
       if (editedCategory) {
@@ -122,9 +122,9 @@ const CategoriesPage = ({ data: initialCategories }) => {
       const property = updatedProperties[index];
 
       if (propertyType === 'propertyName') {
-        property.name = value;
+        property.name = valuevalue;
       } else if (propertyType === 'propertyValues') {
-        property.values = value;
+        property.values = value.trim();
       }
 
       return updatedProperties;
@@ -145,7 +145,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
           ? `Edit category ${editedCategory.name}`
           : 'Create new category'}
       </label>
-      <form onSubmit={saveCategory} className='fjustify-center items-center'>
+      <form onSubmit={saveCategory} className='justify-center items-center'>
         {/* ------- NAME ------------------ */}
         <div className='flex gap-2'>
           <input
