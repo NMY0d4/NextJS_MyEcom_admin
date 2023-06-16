@@ -5,6 +5,7 @@ import {
   HiOutlineClipboardList,
   HiOutlineCog,
   HiOutlineHome,
+  HiOutlineUserGroup,
 } from 'react-icons/hi';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
@@ -98,6 +99,16 @@ const Nav = ({ show, onClose }) => {
         >
           <HiOutlineClipboardList size='1.5rem' />
           Orders
+        </Link>
+        <Link
+          href={'/admins'}
+          className={`${pathname === '/admins' ? activeLink : inactiveLink} ${
+            isLoading ? 'disabled-link' : ''
+          }`}
+          disabled={!isReady || isLoading}
+        >
+          <HiOutlineUserGroup size='1.5rem' color='#DDE6ED' />
+          Admins
         </Link>
         <Link
           href={'/settings'}
