@@ -1,3 +1,5 @@
+import { formatOrderDate } from '@/lib/date';
+import { AddEmailAsAdmin, deleteEmailFromAdmin } from '@/lib/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BarLoader } from 'react-spinners';
@@ -10,6 +12,7 @@ export default function AdminsPage() {
 
   function addAdmin(e) {
     e.preventDefault();
+    console.log(email);
     Swal.fire({
       title: 'Confirmation',
       text: `Are you sure you want to add this ${email} as Admin?`,
@@ -22,22 +25,22 @@ export default function AdminsPage() {
     }).then((result) => {
       if (result.isConfirmed) {
         // Si confirmation
-        AddEmailasAdmin(email);
+        AddEmailAsAdmin();
       }
     });
   }
 
-  async function AddEmailasAdmin(email) {
+  async function AddEmailAsAdmin() {
     try {
       // Make your deletion request with axios
-      const res = await axios.post(`/api/admins`, { email });
+      await axios.post(`/api/admins`, { email });
       setEmail('');
       loadAdmins();
 
       // Display a success notification with SweetAlert2
       Swal.fire({
         title: 'Success',
-        text: 'Category deleted successfully',
+        text: 'Admin created successfully',
         icon: 'success',
       });
     } catch (error) {
@@ -45,7 +48,50 @@ export default function AdminsPage() {
       // Displaying error notification with SweetAlert2
       Swal.fire({
         title: 'Error',
-        text: 'An error occurred while deleting the category',
+        text: 'An error occurred while creating the admin',
+        icon: 'error',
+      });
+    }
+  }
+
+  function deleteAdmin(e, id) {
+    e.preventDefault();
+    Swal.fire({
+      title: 'Confirmation',
+      text: `Are you sure you want to delete this from Admin?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'delete',
+      confirmButtonColor: 'darkRed',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si confirmation
+        deleteEmailFromAdmin(id);
+        loadAdmins();
+      }
+    });
+  }
+
+  async function deleteEmailFromAdmin(id) {
+    try {
+      // Make your deletion request with axios
+      axios.delete(`/api/admins?id=${id}`);
+      loadAdmins();
+
+      // Display a success notification with SweetAlert2
+      Swal.fire({
+        title: 'Success',
+        text: 'Admin deleted successfully',
+        icon: 'success',
+      });
+    } catch (error) {
+      console.error(error);
+      // Displaying error notification with SweetAlert2
+      Swal.fire({
+        title: 'Error',
+        text: 'An error occurred while deleted the admin',
         icon: 'error',
       });
     }
@@ -68,7 +114,7 @@ export default function AdminsPage() {
       <h1>Admins</h1>
       <h2>Add new admins</h2>
 
-      <form className='mt-4' onSubmit={addAdmin}>
+      <form className='mt-4' onSubmit={(e) => addAdmin(e)}>
         <div className='flex gap-2'>
           <input
             type='text'
@@ -84,11 +130,13 @@ export default function AdminsPage() {
           </button>
         </div>
       </form>
-      <h2>Existing admins</h2>
+      <h2 className='mt-4'>Existing admins</h2>
       <table className='basic'>
         <thead>
           <tr>
             <th className='text-left'>Admin google email</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -103,6 +151,19 @@ export default function AdminsPage() {
             adminEmails.map((adminEmail) => (
               <tr key={adminEmail._id}>
                 <td>{adminEmail.email}</td>
+                <td>
+                  {adminEmail.createdAt &&
+                    formatOrderDate(adminEmail.createdAt)}
+                </td>
+                <td>
+                  <button
+                    type='button'
+                    onClick={(e) => deleteAdmin(e, adminEmail._id)}
+                    className='btn-primary-danger'
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
         </tbody>

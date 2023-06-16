@@ -15,6 +15,12 @@ export default async function handle(req, res) {
     res.json(await Admin.create({ email }));
   }
 
+  if (req.method === 'DELETE') {
+    const { id } = req.query;
+    await Admin.findByIdAndDelete(id);
+    res.json(true);
+  }
+
   if (req.method === 'GET') {
     res.json(await Admin.find());
   }
