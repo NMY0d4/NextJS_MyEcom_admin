@@ -1,10 +1,11 @@
-const { Schema, model, models } = require("mongoose");
+const { Schema, model, models } = require('mongoose');
 
 const AdminSchema = new Schema({
   email: {
-    type: String, required: true
-  }
-})
+    type: String,
+    required: true,
+    unique: true,
+  },
+});
 
 export const Admin = models?.Admin || model('Admin', AdminSchema);
-

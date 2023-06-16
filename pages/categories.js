@@ -85,14 +85,14 @@ const CategoriesPage = ({ data: initialCategories }) => {
 
   async function performDeleteCategory(category) {
     try {
-      // Effectuer votre requête de suppression avec axios
+      // Make your deletion request with axios
       await axios.delete(`/api/categories?_id=${category._id}`);
 
-      // Mettre à jour la liste des catégories après la suppression
+      // Update category list after deletion
       const res = await axios.get('/api/categories');
       setCategories(res.data);
 
-      // Afficher une notification de succès avec SweetAlert2
+    // Display a success notification with SweetAlert2
       Swal.fire({
         title: 'Success',
         text: 'Category deleted successfully',
@@ -100,7 +100,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
       });
     } catch (error) {
       console.error(error);
-      // Afficher une notification d'erreur avec SweetAlert2
+      // Displaying error notification with SweetAlert2
       Swal.fire({
         title: 'Error',
         text: 'An error occurred while deleting the category',
