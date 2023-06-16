@@ -11,6 +11,7 @@ import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Logo from './ui/Logo';
+import { BarLoader } from 'react-spinners';
 
 const Nav = ({ show, onClose }) => {
   const inactiveLink = 'flex items-center gap-2 p-1 hover:font-semibold';
@@ -115,6 +116,12 @@ const Nav = ({ show, onClose }) => {
           <BiLogOut size='1.5rem' />
           Logout
         </button>
+
+        {isLoading && (
+          <div className='mx-auto mt-4'>
+            <BarLoader color='#DDE6ED' />
+          </div>
+        )}
       </nav>
     </aside>
   );

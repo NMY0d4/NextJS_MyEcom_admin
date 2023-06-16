@@ -33,7 +33,7 @@ export default function Layout({ children }) {
 
   return (
     <div className='bg-genBg text-secondary w-screen min-h-screen'>
-      <div className='md:hidden flex justify-between items-center p-2'>
+      <div className='md:hidden flex justify-between items-center p-2 mr-3'>
         <button onClick={() => setShowNav(true)}>
           <RxHamburgerMenu size='1.8rem' />
         </button>

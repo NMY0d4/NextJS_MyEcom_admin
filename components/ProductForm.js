@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { HiOutlineUpload } from 'react-icons/hi';
 import { Spinner } from './ui/spinner';
 import { ReactSortable } from 'react-sortablejs';
+import { BarLoader } from 'react-spinners';
 // import Image from 'next/image';
 
 function ProductForm({ product: editProduct, formTitle }) {
@@ -20,6 +21,7 @@ function ProductForm({ product: editProduct, formTitle }) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
   const router = useRouter();
 
   const { images, category, properties: productProperties } = product;
@@ -29,10 +31,12 @@ function ProductForm({ product: editProduct, formTitle }) {
   }, []);
 
   useEffect(() => {
+    setCategoriesLoading(true);
     axios
       .get('/api/categories')
       .then((res) => {
         setCategories(res.data);
+        setCategoriesLoading(false);
       })
       .catch((err) => {
         console.error('Error during categories recovery :', err);
@@ -140,6 +144,11 @@ function ProductForm({ product: editProduct, formTitle }) {
             ))}
         </select>
         {/* ----------- PROPERTIES --------------- */}
+        {categoriesLoading && (
+          <div className='flex justify-center mt-8'>
+            <BarLoader />
+          </div>
+        )}
         {propertiesToFill.length > 0 && <h2>Properties</h2>}
         <div className='flex wrap gap-3 pb-3'>
           {propertiesToFill.length > 0 &&
