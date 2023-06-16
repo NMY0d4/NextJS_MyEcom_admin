@@ -107,7 +107,7 @@ const Nav = ({ show, onClose }) => {
           }`}
           disabled={!isReady || isLoading}
         >
-          <HiOutlineUserGroup size='1.5rem' color='#DDE6ED' />
+          <HiOutlineUserGroup size='1.5rem' />
           Admins
         </Link>
         <Link

@@ -61,7 +61,7 @@ table.basic a:hover {
 }
 
 table.basic {
-  @apply w-full rounded-sm shadow-sm;
+  @apply w-full rounded-sm shadow-sm mt-5;
 }
 
 table.basic thead tr td,
