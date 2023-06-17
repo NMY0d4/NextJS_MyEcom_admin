@@ -46,19 +46,20 @@ export default function AdminsPage() {
     } catch (error) {
       console.error(error);
       // Displaying error notification with SweetAlert2
+      console.log(error);
       Swal.fire({
         title: 'Error',
-        text: 'An error occurred while creating the admin',
+        text: error.response.data.message,
         icon: 'error',
       });
     }
   }
 
-  function deleteAdmin(e, id) {
+  function deleteAdmin(e, id, email) {
     e.preventDefault();
     Swal.fire({
       title: 'Confirmation',
-      text: `Are you sure you want to delete this from Admin?`,
+      text: `Are you sure you want to delete this email ${email} from Admin?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'delete',
@@ -158,7 +159,9 @@ export default function AdminsPage() {
                 <td>
                   <button
                     type='button'
-                    onClick={(e) => deleteAdmin(e, adminEmail._id)}
+                    onClick={(e) =>
+                      deleteAdmin(e, adminEmail._id, adminEmail.email)
+                    }
                     className='btn-primary-danger'
                   >
                     Delete
