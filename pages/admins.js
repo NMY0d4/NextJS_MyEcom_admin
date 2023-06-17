@@ -45,8 +45,7 @@ export default function AdminsPage() {
       });
     } catch (error) {
       console.error(error);
-      // Displaying error notification with SweetAlert2
-      console.log(error);
+      // Displaying error notification with SweetAlert2      
       Swal.fire({
         title: 'Error',
         text: error.response.data.message,

@@ -11,8 +11,9 @@ export default function Layout({ children }) {
   const handleSignIn = async () => {
     try {
       await signIn('google');
+      console.log(session);
     } catch (error) {
-      console.error('Error during sign in:', error);
+      console.log('Error during sign in:', error.response.data.message);
     }
   };
 

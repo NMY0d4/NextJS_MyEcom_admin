@@ -1,9 +1,15 @@
 import clientPromise from '@/lib/mongodb';
+import { Admin } from '@/models/Admin';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import NextAuth, { getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
 // const adminEmails = ['newmastyoda27@gmail.com'];
+
+async function isAdminEmail(email) {
+  console.log(await Admin.findOne(email));
+  return !!(await Admin.find({ email }));
+}
 
 export async function getUserFromMongoDB(email) {
   const client = await clientPromise;
@@ -32,7 +38,10 @@ export const authOptions = {
           role: userFromDB.role,
         };
       }
-      if (session.user.role === 'admin') {
+      if (
+        session.user.role === 'admin' ||
+        (await isAdminEmail(session?.user?.email))
+      ) {
         return session;
       } else {
         return false;
@@ -45,8 +54,12 @@ export default NextAuth(authOptions);
 
 export async function isAdminRequest(req, res) {
   const session = await getServerSession(req, res, authOptions);
-  if (session.user.role !== 'admin') {
-    res.status(401).json({ error: 'Not an admin' });
+  console.log(session?.user?.email);
+  if (
+    session.user.role !== 'admin' ||
+    (await isAdminEmail(session?.user?.email))
+  ) {
+    res.status(401).json({ message: 'Not an admin' });
   }
   return true;
 }
