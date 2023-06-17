@@ -1,4 +1,5 @@
 import clientPromise from '@/lib/mongodb';
+import { mongooseConnect } from '@/lib/mongoose';
 import { Admin } from '@/models/Admin';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import NextAuth, { getServerSession } from 'next-auth';
@@ -7,8 +8,11 @@ import GoogleProvider from 'next-auth/providers/google';
 // const adminEmails = ['newmastyoda27@gmail.com'];
 
 async function isAdminEmail(email) {
-  console.log(await Admin.findOne(email));
-  return !!(await Admin.find({ email }));
+  await mongooseConnect();
+  const foundAdmin = await Admin.findOne({ email });
+
+  console.log(foundAdmin);
+  return foundAdmin.email === email;
 }
 
 export async function getUserFromMongoDB(email) {
@@ -38,9 +42,10 @@ export const authOptions = {
           role: userFromDB.role,
         };
       }
+      console.log(session?.user?.email);
       if (
-        session.user.role === 'admin' ||
-        (await isAdminEmail(session?.user?.email))
+        // session.user.role === 'admin' ||
+        await isAdminEmail(session?.user?.email)
       ) {
         return session;
       } else {
@@ -54,12 +59,13 @@ export default NextAuth(authOptions);
 
 export async function isAdminRequest(req, res) {
   const session = await getServerSession(req, res, authOptions);
-  console.log(session?.user?.email);
+  // console.log(session?.user?.email);
   if (
-    session.user.role !== 'admin' ||
-    (await isAdminEmail(session?.user?.email))
+    // session.user.role !== 'admin' ||
+    await isAdminEmail(session?.user?.email)
   ) {
-    res.status(401).json({ message: 'Not an admin' });
+    res.status(401);
+    res.end();
+    throw 'not an admin';
   }
-  return true;
 }
