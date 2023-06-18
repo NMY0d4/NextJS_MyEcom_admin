@@ -1,5 +1,4 @@
 import { formatOrderDate } from '@/lib/date';
-import { AddEmailAsAdmin, deleteEmailFromAdmin } from '@/lib/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BarLoader } from 'react-spinners';
