@@ -13,7 +13,18 @@ export default function SettingsPage() {
       setProducts(res.data);
       setIsLoading(false);
     });
+    axios.get(`/api/settings?name=featuredProductId`).then((res) => {
+      setFeaturedProductId(res.data.value);
+    });
   }, []);
+
+  async function saveSettings() {
+    await axios.put('/api/settings', {
+      name: 'featuredProductId',
+      value: featuredProductId,
+    });
+  }
+
   return (
     <>
       <h1 className='mb-4'>Settings</h1>
@@ -27,6 +38,7 @@ export default function SettingsPage() {
         onChange={(e) => {
           setFeaturedProductId(e.target.value);
         }}
+        value={featuredProductId}
       >
         {products.length > 0 &&
           products.map((product) => (
@@ -36,7 +48,9 @@ export default function SettingsPage() {
           ))}
       </select>
       <div>
-        <button className='btn-primary'>Save settings</button>
+        <button onClick={saveSettings} className='btn-primary'>
+          Save settings
+        </button>
       </div>
     </>
   );
