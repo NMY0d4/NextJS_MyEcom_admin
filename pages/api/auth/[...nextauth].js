@@ -11,8 +11,7 @@ async function isAdminEmail(email) {
   await mongooseConnect();
   const foundAdmin = await Admin.findOne({ email });
 
-  console.log(foundAdmin);
-  return foundAdmin.email === email;
+  return foundAdmin?.email === email;
 }
 
 export async function getUserFromMongoDB(email) {
@@ -42,10 +41,11 @@ export const authOptions = {
           role: userFromDB.role,
         };
       }
-      console.log(session?.user?.email);
+
+      // console.log(session);
       if (
-        // session.user.role === 'admin' ||
-        await isAdminEmail(session?.user?.email)
+        session.user.role === 'admin' ||
+        (await isAdminEmail(session?.user?.email))
       ) {
         return session;
       } else {
@@ -58,11 +58,10 @@ export const authOptions = {
 export default NextAuth(authOptions);
 
 export async function isAdminRequest(req, res) {
-  const session = await getServerSession(req, res, authOptions);
-  // console.log(session?.user?.email);
+  const session = await getServerSession(req, res, authOptions);  
   if (
-    // session.user.role !== 'admin' ||
-    await isAdminEmail(session?.user?.email)
+    session.user.role !== 'admin' &&
+    !(await isAdminEmail(session?.user?.email))
   ) {
     res.status(401);
     res.end();
