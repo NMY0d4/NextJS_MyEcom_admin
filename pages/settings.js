@@ -6,21 +6,28 @@ import Swal from 'sweetalert2';
 export default function SettingsPage() {
   const [products, setProducts] = useState([]);
   const [featuredProductId, setFeaturedProductId] = useState('');
-  const [productLoading, setProductLoading] = useState(false);
-  const [featuredLoading, setFeaturedLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [shippingFee, setShippingFee] = useState(0);
 
   useEffect(() => {
-    setProductLoading(true);
-    axios.get('/api/products').then((res) => {
-      setProducts(res.data);
-      setProductLoading(false);
-    });
-    setFeaturedLoading(true);
-    axios.get(`/api/settings?name=featuredProductId`).then((res) => {
-      setFeaturedProductId(res.data.value);
-      setFeaturedLoading(false);
+    setIsLoading(true);
+    fetchAll().then(() => {
+      setIsLoading(false);
     });
   }, []);
+
+  async function fetchAll() {
+    await axios.get('/api/products').then((res) => {
+      setProducts(res.data);
+    });
+
+    await axios.get(`/api/settings?name=featuredProductId`).then((res) => {
+      setFeaturedProductId(res.data.value);
+    });
+    await axios.get(`/api/settings?name=shippingFee`).then((res) => {
+      setShippingFee(res.data.value);
+    });
+  }
 
   function saveSettings() {
     Swal.fire({
@@ -42,14 +49,21 @@ export default function SettingsPage() {
 
   async function saveFeaturedProduct() {
     try {
+      setIsLoading(true);
       // Make your deletion request with axios
       await axios.put('/api/settings', {
         name: 'featuredProductId',
         value: featuredProductId,
       });
 
+      await axios.put('/api/settings', {
+        name: 'shippingFee',
+        value: shippingFee,
+      });
+      setIsLoading(false);
+
       // Display a success notification with SweetAlert2
-      Swal.fire({
+      await Swal.fire({
         title: 'Success',
         text: 'Featured product saved successfully',
         icon: 'success',
@@ -68,12 +82,12 @@ export default function SettingsPage() {
   return (
     <>
       <h1 className='mb-4'>Settings</h1>
-      {(productLoading || featuredLoading) && (
+      {isLoading && (
         <div className='flex justify-center my-5'>
           <BarLoader />
         </div>
       )}
-      {!productLoading && !featuredLoading && (
+      {!isLoading && (
         <>
           <label>Featured product</label>
           <select
@@ -89,6 +103,12 @@ export default function SettingsPage() {
                 </option>
               ))}
           </select>
+          <label>Shipping price (in usd)</label>
+          <input
+            type='number'
+            value={shippingFee}
+            onChange={(e) => setShippingFee(e.target.value)}
+          />
           <div>
             <button onClick={saveSettings} className='btn-primary'>
               Save settings
