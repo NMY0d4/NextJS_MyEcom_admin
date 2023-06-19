@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Admin ecommerce</title>
+        <title>GM_Web Admi-ecommerce</title>
       </Head>
       <div>
         <HomeHeader />
