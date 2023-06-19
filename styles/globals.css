@@ -27,10 +27,6 @@ h2 {
   @apply text-xl font-semibold pt-4;
 }
 
-h3 {
-  @apply text-sm uppercase text-gray-500 font-bold;
-}
-
 label {
   @apply text-primary text-sm font-semibold;
 }
