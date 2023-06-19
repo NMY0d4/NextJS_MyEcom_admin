@@ -1,6 +1,6 @@
 import { mongooseConnect } from '@/lib/mongoose';
 import { isAdminRequest } from './auth/[...nextauth]';
-import { Category } from '@/models/Category';
+import { Category } from '../../models/Category';
 
 export default async function handle(req, res) {
   const { method } = req;
