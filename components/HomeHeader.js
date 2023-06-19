@@ -5,11 +5,11 @@ import React from 'react';
 export default function HomeHeader() {
   const { data: session } = useSession();
   return (
-    <div className='flex justify-between'>
+    <div className='flex flex-col-reverse justify-center gap-2 items-center sm:flex-row sm:justify-between h-[12vh] sm:h-[6vh]'>
       <h2>
         Hello, <b>{session?.user?.name}</b>
       </h2>
-      <div className='flex bg-gray-300 gap-1 text-black rounded-lg overflow-hidden'>
+      <div className='flex bg-gray-300 gap-1 text-black rounded-lg h-full overflow-hidden'>
         <div className='relative w-8 h-full'>
           <Image
             src={session.user.image}

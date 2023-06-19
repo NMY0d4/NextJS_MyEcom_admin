@@ -8,8 +8,10 @@ export default function Home() {
       <Head>
         <title>Admin ecommerce</title>
       </Head>
-      <HomeHeader />
-      <HomeStats />
+      <div>
+        <HomeHeader />
+        <HomeStats />
+      </div>
     </>
   );
 }
