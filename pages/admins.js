@@ -44,7 +44,7 @@ export default function AdminsPage() {
       });
     } catch (error) {
       console.error(error);
-      // Displaying error notification with SweetAlert2      
+      // Displaying error notification with SweetAlert2
       Swal.fire({
         title: 'Error',
         text: error.response.data.message,
@@ -141,7 +141,10 @@ export default function AdminsPage() {
         <tbody>
           {isLoading && (
             <tr>
-              <td colSpan={2} className='flex justify-center items-center my-2'>
+              <td
+                colSpan={3}
+                className='flex justify-center items-center h-[30vh] col-span-full'
+              >
                 <BarLoader />
               </td>
             </tr>

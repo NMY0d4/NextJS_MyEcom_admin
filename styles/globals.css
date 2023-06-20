@@ -69,7 +69,7 @@ table.basic thead tr th {
   @apply text-sm font-semibold uppercase border-b border-tertiary px-4 py-2;
 }
 
-table.basic tr td {
+table.basic tbody tr td {
   @apply px-4 py-2;
 }
 
