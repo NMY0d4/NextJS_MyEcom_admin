@@ -33,7 +33,7 @@ function Products({ products }) {
 
 export async function getServerSideProps({ req }) {
   try {
-    const response = await axios.get('http://localhost:3000/api/products', {
+    const response = await axios.get(`${process.env.NEXTAUTH_URL}/api/products`, {
       withCredentials: true,
       headers: {
         Cookie: req.headers.cookie,

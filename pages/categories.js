@@ -92,7 +92,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
       const res = await axios.get('/api/categories');
       setCategories(res.data);
 
-    // Display a success notification with SweetAlert2
+      // Display a success notification with SweetAlert2
       Swal.fire({
         title: 'Success',
         text: 'Category deleted successfully',
@@ -260,7 +260,7 @@ const CategoriesPage = ({ data: initialCategories }) => {
 };
 
 export async function getServerSideProps({ req }) {
-  const res = await axios.get('http://localhost:3000/api/categories', {
+  const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/categories`, {
     withCredentials: true,
     headers: {
       Cookie: req.headers.cookie,
